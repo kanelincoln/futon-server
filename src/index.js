@@ -27,7 +27,10 @@ const startServer = async () => {
 
   apolloServer.applyMiddleware({
     app,
-    path: '/api' // This is the GraphQL endpoint, which Apollo sets to '/graphql' by default.
+    
+    // This is the GraphQL endpoint, which Apollo sets to '/graphql' by default.
+    // It is set to '/' for now because it is hosted at the domain 'api.tryfuton.com'.
+    path: '/'
   });
 
   httpServer.listen({ port: process.env.PORT || 4000 }, () => {
