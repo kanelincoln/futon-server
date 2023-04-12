@@ -30,8 +30,8 @@ const startServer = async () => {
     path: '/api' // This is the GraphQL endpoint, which Apollo sets to '/graphql' by default.
   });
 
-  httpServer.listen(4000, () => { // We may have to obtain this from process.env.PORT if deploying with Heroku.
-    console.log(`Server is running on port 4000${apolloServer.graphqlPath}`);
+  httpServer.listen({ port: process.env.PORT || 4000 }, () => {
+    console.log(`Server is running on ${process.env.PORT || '4000'}${apolloServer.graphqlPath}`);
   });
 };
 
