@@ -1,7 +1,7 @@
-import { createServer } from 'http';
-import express from 'express';
-import { ApolloServer, gql } from 'apollo-server-express';
-import { PrismaClient } from '@prisma/client';
+const { createServer } = require('http');
+const express = require('express');
+const { ApolloServer, gql } = require('apollo-server-express');
+const { PrismaClient } = require('@prisma/client');
 
 const startServer = async () => {
   const app = express();
