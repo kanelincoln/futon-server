@@ -24,4 +24,5 @@ model Space {
   name        String
   borough     Borough     @relation(fields: [boroughId], references: [id])
   boroughId   Int
+  type        String
 }
