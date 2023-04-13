@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "npx dotenv -e .env.dev -- nodemon",
-    "test": "npx dotenv -e .env.test -- jest -i",
+    "test": "npx dotenv -e .env.test -- jest -i --watch",
     "studio:dev": "npx dotenv -e .env.dev -- npx prisma studio",
     "studio:test": "npx dotenv -e .env.test -- npx prisma studio",
     "migrate:dev": "npx dotenv -e .env.dev npx prisma migrate dev",
