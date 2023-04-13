@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon",
+    "dev": "npx dotenv -e .env.dev -- nodemon",
     "test": "npx dotenv -e .env.test -- jest -i",
     "studio:dev": "npx dotenv -e .env.dev -- npx prisma studio",
     "studio:test": "npx dotenv -e .env.test -- npx prisma studio",
