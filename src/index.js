@@ -1,52 +1,13 @@
 const { createServer } = require('http');
 const express = require('express');
-const { ApolloServer, gql } = require('apollo-server-express');
-const { PrismaClient } = require('@prisma/client');
+const { ApolloServer } = require('apollo-server-express');
+
+const { typeDefs } = require('./typeDefs');
+const { resolvers } = require('./resolvers');
 
 const startServer = async () => {
   const app = express();
   const httpServer = createServer(app);
-  const prisma = new PrismaClient();
-
-  const typeDefs = gql`
-    type Query {
-      boroughsWithSpaces: [Borough!]
-    }
-
-    type Borough {
-      id: ID!
-      name: String!
-      spaces: [Space!]
-    }
-
-    type Query {
-      getSpacesByBoroughId(boroughId: Int!): [Space!]!
-    }
-
-    type Space {
-      id: ID!
-      name: String!
-      boroughId: Int!
-    }
-  `;
-
-  const resolvers = {
-    Query: {
-      boroughsWithSpaces: async () => {
-        return await prisma.borough.findMany({
-          where: {
-            spaces: {
-              some: {}
-            },
-          },
-
-          include: {
-            spaces: true
-          }
-        })
-      }
-    },
-  };
 
   const apolloServer = new ApolloServer({
     typeDefs,
