@@ -21,3 +21,17 @@ You can use Prisma Studio to explore and manipulate data in your local database 
 ```bash
 npx prisma studio
 ```
+
+**Note**: You cannot view the contents of the test database (below) through Prisma Studio.
+
+## Testing
+
+You can run the test suite by running:
+
+```bash
+npm run test
+```
+
+**Note:** The project's `docker-compose.yml` will create two databases, one for local development and one dedicated to (automated) testing.
+
+The test suite will automatically seed the test database with the data it needs to run any existing tests.
