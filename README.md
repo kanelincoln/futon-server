@@ -8,7 +8,9 @@ Next, run the Docker containers:
 docker compose up -d
 ```
 
-Next, run the development server:
+Next, set up the database(s) by running any necessary migrations.
+
+Run the development server:
 
 ```bash
 npm run dev
@@ -16,27 +18,37 @@ npm run dev
 
 Check the server is running by visiting `http://localhost:4000`. You should be able to open Apollo Client's querying Sandbox from there.
 
-You can use Prisma Studio to explore and manipulate data in your local database by running:
+You can use Prisma Studio to explore and manipulate data in your local (dev) database by running the following:
 
 ```bash
-npx prisma studio
+npm run studio:dev
 ```
+
+(If you want to use the Studio to view/modify the test database, you can instead run `npm run studio:test`.)
 
 **Note:** Every time you make changes to the schema and create a migration, you will need to restart the Studio to see those changes reflected.
 
 ## Testing
 
-You can run the test suite by running:
+You will need to set up the `test` database by performing any required migrations. You can do this by running:
+
+```bash
+npm run migrate:test
+```
+
+You can then run the test suite:
 
 ```bash
 npm run test
 ```
 
-**Note:** The project's `docker-compose.yml` will create two databases, one for local development and one dedicated to (automated) testing.
+**Note:** The test suite will automatically seed the test database with the data it needs to run any existing tests.
 
-The test suite will automatically seed the test database with the data it needs to run any existing tests.
+## Environment Variables
+
+The scripts in `package.json` use `dotenv-cli` to set environment variables based on the `.env` files in the project. View `package.json` to see how this works.
 
 ## Important
 
-* The project is deployed on Heroku. Automatic deploys are triggered on every Git push/merge to/with `main` branch. This includes changes to the database schema.
-* If you need to add a column to a database table that already contains data, you'll need to make the column optional (through adding `?` to the schema) by creating a migration, and then create another migration that makes the column mandatory (after you've modified each row in the table to contain the now-mandatory data). 
+* The project is deployed on Heroku. **Automatic deploys are triggered on every Git push/merge to/with `main` branch.** This includes changes to the database schema.
+* If you need to add a column to a database table that already contains data, you'll need to make the column optional (through adding `?` to the schema) by creating a migration, and then create another migration that makes the column mandatory (after you've modified each row in the table to contain the now-mandatory data).
