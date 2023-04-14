@@ -30,9 +30,9 @@ const typeDefs = gql`
       busyness: Int!
       coffee: Int!
       hotspot: Int!
-      hours: [Hours]
-      images: [Image]
-      rules: String!
+      hours: [Hours!]
+      images: [Image!]
+      rules: String
       googleMaps: String!
     }
 
