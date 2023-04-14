@@ -9,6 +9,7 @@ const prisma = new PrismaClient();
 describe('boroughsWithSpaces', () => {
   afterEach(async () => {
     await prisma.hours.deleteMany();
+    await prisma.image.deleteMany();
     await prisma.space.deleteMany();
     await prisma.borough.deleteMany();
   });
@@ -55,7 +56,7 @@ describe('boroughsWithSpaces', () => {
     expect(boroughsWithSpaces[0].spaces).toHaveLength(1);
   });
 
-  it('returns any hours associated with each Space.', async () => {
+  it('returns any Hours associated with each Space;', async () => {
     await createTestSpace(prisma);
 
     const query = gql`
@@ -79,5 +80,34 @@ describe('boroughsWithSpaces', () => {
 
     expect(response.errors).toBeUndefined();
     expect(space.hours).toHaveLength(1);
-  })
+  });
+
+  it('returns any Images associated with each Space.', async () => {
+    await createTestSpace(prisma);
+
+    const query = gql`
+      query {
+        boroughsWithSpaces {
+          id
+          name
+          spaces {
+            id
+            name
+            hours {
+              day
+            }
+            images {
+              url
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await testServer.executeOperation({ query });
+    const images = response.data.boroughsWithSpaces[0].spaces[0].images;
+
+    expect(response.errors).toBeUndefined();
+    expect(images).toHaveLength(1);
+  });
 });

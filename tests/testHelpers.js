@@ -33,7 +33,14 @@ const createTestSpace = async (prisma) => {
     }
   });
 
-  return { borough, space, hours };
+  const image = await prisma.image.create({
+    data: {
+      spaceId: space.id,
+      url: 'http://test.test'
+    }
+  });
+
+  return { borough, space, hours, image };
 }
 
 module.exports = {
