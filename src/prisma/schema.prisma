@@ -30,8 +30,8 @@ model Space {
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
   name            String
-  borough         Borough     @relation(fields: [boroughId], references: [id])
   boroughId       Int
+  borough         Borough     @relation(fields: [boroughId], references: [id])
   affordability   Int
   type            String
   wiFi            Int
@@ -44,7 +44,7 @@ model Space {
   hotspot         Int
   hours           Hours[]
   images          Image[]
-  rules           String
+  rules           String?
   googleMaps      String
 }
 

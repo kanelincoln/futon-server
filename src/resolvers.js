@@ -31,6 +31,11 @@ const resolvers = {
         where: { spaceId: parent.id },
       });
     },
+    images: async (parent) => {
+      return await prisma.image.findMany({
+        where: { spaceId: parent.id }
+      });
+    }
   }
 };
 

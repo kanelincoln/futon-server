@@ -31,6 +31,7 @@ const typeDefs = gql`
       coffee: Int!
       hotspot: Int!
       hours: [Hours]
+      images: [Image]
       rules: String!
       googleMaps: String!
     }
