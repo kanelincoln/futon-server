@@ -12,17 +12,38 @@ datasource db {
 
 // Tables
 model Borough {
-  id          Int         @id @default(autoincrement())
-  name        String
-  spaces      Space[]
+  id              Int         @id @default(autoincrement())
+  name            String
+  spaces          Space[]
+}
+
+model OpeningHours {
+  id              Int         @id @default(autoincrement())
+  spaceId         Int
+  space           Space       @relation(fields: [spaceId], references: [id])
+  day             String
+  openTime        String
+  closeTime       String
 }
 
 model Space {
-  id          Int         @id @default(autoincrement())
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  name        String
-  borough     Borough     @relation(fields: [boroughId], references: [id])
-  boroughId   Int
-  type        String
+  id              Int         @id @default(autoincrement())
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  name            String
+  borough         Borough     @relation(fields: [boroughId], references: [id])
+  boroughId       Int
+  affordability   Int
+  type            String
+  wiFi            Int
+  loudness        Int
+  power           Int
+  size            Int
+  space           Int
+  busyness        Int
+  coffee          Int
+  hotspot         Int
+  openingHours    OpeningHours[]
+  rules           String
+  googleMaps      String
 }
