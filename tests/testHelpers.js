@@ -24,16 +24,16 @@ const createTestSpace = async (prisma) => {
     }
   });
 
-  const openingHours = await prisma.openingHours.create({
+  const hours = await prisma.hours.create({
     data: {
       spaceId: space.id,
       day: 'Monday',
-      openTime: '08:00',
-      closeTime: '17:00'
+      open: '08:00',
+      close: '17:00'
     }
   });
 
-  return { borough, space, openingHours };
+  return { borough, space, hours };
 }
 
 module.exports = {

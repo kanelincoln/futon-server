@@ -10,20 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Tables
 model Borough {
   id              Int         @id @default(autoincrement())
   name            String
   spaces          Space[]
 }
 
-model OpeningHours {
+model Hours {
   id              Int         @id @default(autoincrement())
   spaceId         Int
   space           Space       @relation(fields: [spaceId], references: [id])
   day             String
-  openTime        String
-  closeTime       String
+  open            String
+  close           String
 }
 
 model Space {
@@ -43,7 +42,15 @@ model Space {
   busyness        Int
   coffee          Int
   hotspot         Int
-  openingHours    OpeningHours[]
+  hours           Hours[]
+  images          Image[]
   rules           String
   googleMaps      String
+}
+
+model Image {
+  id              Int         @id @default(autoincrement())
+  spaceId         Int
+  space           Space       @relation(fields: [spaceId], references: [id])
+  url             String
 }

@@ -6,9 +6,9 @@ const { createTestSpace } = require('./testHelpers');
 
 const prisma = new PrismaClient();
 
-describe('boroughsWithSpacesAndOpeningHours', () => {
+describe('boroughsWithSpaces', () => {
   afterEach(async () => {
-    await prisma.openingHours.deleteMany();
+    await prisma.hours.deleteMany();
     await prisma.space.deleteMany();
     await prisma.borough.deleteMany();
   });
@@ -55,7 +55,7 @@ describe('boroughsWithSpacesAndOpeningHours', () => {
     expect(boroughsWithSpaces[0].spaces).toHaveLength(1);
   });
 
-  it('returns any OpeningHours associated with each Space.', async () => {
+  it('returns any hours associated with each Space.', async () => {
     await createTestSpace(prisma);
 
     const query = gql`
@@ -66,7 +66,7 @@ describe('boroughsWithSpacesAndOpeningHours', () => {
           spaces {
             id
             name
-            openingHours {
+            hours {
               day
             }
           }
@@ -78,6 +78,6 @@ describe('boroughsWithSpacesAndOpeningHours', () => {
     const space = response.data.boroughsWithSpaces[0].spaces[0];
 
     expect(response.errors).toBeUndefined();
-    expect(space.openingHours).toHaveLength(1);
+    expect(space.hours).toHaveLength(1);
   })
 });

@@ -7,12 +7,12 @@ const typeDefs = gql`
       spaces: [Space!]
     }
     
-    type OpeningHours {
+    type Hours {
       id: ID!
       spaceId: Int!
       day: String!
-      openTime: String!
-      closeTime: String!
+      open: String!
+      close: String!
     }
 
     type Space {
@@ -30,9 +30,15 @@ const typeDefs = gql`
       busyness: Int!
       coffee: Int!
       hotspot: Int!
-      openingHours: [OpeningHours]
+      hours: [Hours]
       rules: String!
       googleMaps: String!
+    }
+
+    type Image {
+      id: ID!
+      spaceId: Int!
+      url: String!
     }
 
     type Query {

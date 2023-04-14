@@ -26,8 +26,8 @@ const resolvers = {
         where: { id: parent.boroughId },
       });
     },
-    openingHours: async (parent) => {
-      return await prisma.openingHours.findMany({
+    hours: async (parent) => {
+      return await prisma.hours.findMany({
         where: { spaceId: parent.id },
       });
     },
