@@ -8,10 +8,12 @@ const prisma = new PrismaClient();
 
 describe('boroughsWithSpaces', () => {
   afterEach(async () => {
-    await prisma.hours.deleteMany();
-    await prisma.image.deleteMany();
-    await prisma.space.deleteMany();
-    await prisma.borough.deleteMany();
+    const deleteHours = prisma.hours.deleteMany();
+    const deleteImage = prisma.image.deleteMany();
+    const deleteSpace = prisma.space.deleteMany();
+    const deleteBorough = prisma.borough.deleteMany();
+
+    await prisma.$transaction([deleteHours, deleteImage, deleteSpace, deleteBorough]);
   });
 
   it('returns an array of Boroughs that have at least one space associated with it;', async () => {

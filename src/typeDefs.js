@@ -32,7 +32,7 @@ const typeDefs = gql`
       hotspot: Int!
       hours: [Hours!]
       images: [Image!]
-      rules: String
+      comments: String
       googleMaps: String!
     }
 
