@@ -743,16 +743,6 @@ const seedData = {
               open: '00:00',
               close: '00:00',
             },
-            {
-              day: 'Saturday',
-              open: '00:00',
-              close: '00:00',
-            },
-            {
-              day: 'Sunday',
-              open: '00:00',
-              close: '00:00',
-            },
           ],
           images: [
             {
@@ -842,6 +832,77 @@ const seedData = {
               url: 'https://tryfuton.s3.eu-west-2.amazonaws.com/the-hoxton-holborn-5.jpeg',
             },
           ],
+        }
+      ]
+    },
+    {
+      name: 'Islington',
+      spaces: [
+        {
+          name: 'Serata Hall',
+          type: 'Restaurant, Co-working',
+          affordability: 2,
+          wiFi: 4,
+          hotspot: 4,
+          loudness: 3,
+          power: 3,
+          size: 5,
+          space: 3,
+          busyness: 3,
+          coffee: 3,
+          comments: "I would avoid this place on weekends! It's very loud and you'll find few people working from here.",
+          googleMaps: 'https://goo.gl/maps/aJnorzgWarLDzQUH8',
+          hours: [
+            {
+              day: 'Monday',
+              open: '08:00',
+              close: '23:30',
+            },
+            {
+              day: 'Tuesday',
+              open: '08:00',
+              close: '23:30',
+            },
+            {
+              day: 'Wednesday',
+              open: '08:00',
+              close: '23:30',
+            },
+            {
+              day: 'Thursday',
+              open: '08:00',
+              close: '23:30',
+            },
+            {
+              day: 'Friday',
+              open: '08:00',
+              close: '00:30',
+            },
+            {
+              day: 'Saturday',
+              open: '09:00',
+              close: '00:30',
+            },
+            {
+              day: 'Sunday',
+              open: '10:00', 
+              close: '23:00',
+            },
+          ],
+          images: [
+            {
+              url: 'https://tryfuton.s3.eu-west-2.amazonaws.com/serata-hall-1.jpeg',
+            },
+            {
+              url: 'https://tryfuton.s3.eu-west-2.amazonaws.com/serata-hall-2.jpeg',
+            },
+            {
+              url: 'https://tryfuton.s3.eu-west-2.amazonaws.com/serata-hall-3.jpeg',
+            },
+            {
+              url: 'https://tryfuton.s3.eu-west-2.amazonaws.com/serata-hall-4.jpeg',
+            }
+          ]
         }
       ]
     }

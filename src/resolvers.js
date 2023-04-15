@@ -6,6 +6,7 @@ const resolvers = {
   Query: {
     boroughsWithSpaces: async () => {
       return await prisma.borough.findMany({
+        orderBy: { name: 'asc' },
         where: { spaces: { some: {} } },
         include: { spaces: true }
       });
