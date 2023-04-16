@@ -45,6 +45,10 @@ const typeDefs = gql`
     type Query {
       boroughsWithSpaces: [Borough!]
     }
+    
+    type Mutation {
+      addEmailToAirtable(email: String!): String
+    }
   `;
 
   module.exports = { typeDefs };
