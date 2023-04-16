@@ -13,7 +13,7 @@ const startServer = async () => {
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
-    plugins: [ApolloServerPluginLandingPageDisabled()]
+    // plugins: [ApolloServerPluginLandingPageDisabled()]
   });
 
   await apolloServer.start(); // Apollo must be started before it can be declared as middleware (below).
