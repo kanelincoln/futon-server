@@ -1,6 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
+const Airtable = require('airtable');
 
 const prisma = new PrismaClient();
+const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base('appuFvhFBMDmeUFPo');
 
 const resolvers = {
   Query: {
@@ -37,7 +39,25 @@ const resolvers = {
         where: { spaceId: parent.id }
       });
     }
-  }
+  },
+
+  Mutation: {
+    addEmailToAirtable: async (_, { email }) => {
+      try {
+        await base('List').create([
+          {
+            fields: {
+              'Email address': email,
+            },
+          },
+        ]);
+        return;
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+    },
+  },
 };
 
 module.exports = { resolvers };

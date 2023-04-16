@@ -1658,7 +1658,7 @@ const seedData = {
           space: 3,
           busyness: 2,
           coffee: 3,
-          comments: "The building is open 24/7, but we don't know when the foyer is made unavailable to the public.",
+          comments: "",
           googleMaps: 'https://goo.gl/maps/P7WXSrekb7bJUQcHA',
           hours: [
             {
