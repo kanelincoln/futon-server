@@ -10,6 +10,11 @@ const startServer = async () => {
   const app = express();
   const httpServer = createServer(app);
 
+  const corsOptions = {
+    origin: 'https://www.tryfuton.com',
+    credentials: true
+  }
+
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
@@ -20,7 +25,7 @@ const startServer = async () => {
 
   apolloServer.applyMiddleware({
     app,
-    path: '/graphql'
+    cors: corsOptions
   });
 
   httpServer.listen({ port: process.env.PORT || 4000 }, () => {
