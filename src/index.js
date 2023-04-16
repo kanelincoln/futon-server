@@ -1,7 +1,6 @@
 const { createServer } = require('http');
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
-const { ApolloServerPluginLandingPageDisabled } = require('apollo-server-core');
 
 const { typeDefs } = require('./typeDefs');
 const { resolvers } = require('./resolvers');
@@ -10,22 +9,16 @@ const startServer = async () => {
   const app = express();
   const httpServer = createServer(app);
 
-  const corsOptions = {
-    origin: 'https://www.tryfuton.com',
-    credentials: true
-  }
-
   const apolloServer = new ApolloServer({
     typeDefs,
-    resolvers,
-    // plugins: [ApolloServerPluginLandingPageDisabled()]
+    resolvers
   });
 
   await apolloServer.start(); // Apollo must be started before it can be declared as middleware (below).
 
   apolloServer.applyMiddleware({
     app,
-    cors: corsOptions
+    path: '/'
   });
 
   httpServer.listen({ port: process.env.PORT || 4000 }, () => {
