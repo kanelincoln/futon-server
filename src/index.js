@@ -1,7 +1,7 @@
 const { createServer } = require('http');
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
-const { ApolloServerPluginLandingPageDisabled } = require('@apollo/server/plugin/disabled');
+const { ApolloServerPluginLandingPageDisabled } = require('apollo-server-core');
 
 const { typeDefs } = require('./typeDefs');
 const { resolvers } = require('./resolvers');
