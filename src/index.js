@@ -1,6 +1,7 @@
 const { createServer } = require('http');
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
+const { ApolloServerPluginLandingPageDisabled } = require('@apollo/server/plugin/disabled');
 
 const { typeDefs } = require('./typeDefs');
 const { resolvers } = require('./resolvers');
@@ -11,7 +12,8 @@ const startServer = async () => {
 
   const apolloServer = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    plugins: [ApolloServerPluginLandingPageDisabled()]
   });
 
   await apolloServer.start(); // Apollo must be started before it can be declared as middleware (below).
