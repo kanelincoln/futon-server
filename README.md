@@ -48,6 +48,26 @@ npm run test
 
 The scripts in `package.json` use `dotenv-cli` to set environment variables based on the `.env` files in the project. View `package.json` to see how this works.
 
+## Adding a space
+
+You can add a space to the database using the addSpace.js Node script.
+
+### Development
+
+```bash
+npm run add-space:dev path-to-data-file`
+```
+
+### Production
+
+**Note:** Double-check the data is correct because there is no easy-to-use script for deleting the item from the production database (yet).
+
+```bash
+npm run add-space:prod path-to-data-file`
+```
+
+You should upload any images associated with the space to S3 prior to running this script. There is an example file called `exampleSpace.js` inside the `/scripts/addSpace` directory that illustrates the structure of the required data file.
+
 ## Important
 
 * The project is deployed on Heroku. **Automatic deploys are triggered on every Git push/merge to/with `main` branch.** This includes changes to the database schema.
