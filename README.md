@@ -66,6 +66,8 @@ npm run add-space:dev path-to-data-file`
 npm run add-space:prod path-to-data-file`
 ```
 
+**Note:** Images will be uploaded to production in both cases given there is no AWS staging or development environment.
+
 ## Important
 
 * The project is deployed on Heroku. **Automatic deploys are triggered on every Git push/merge to/with `main` branch.** This includes changes to the database schema.

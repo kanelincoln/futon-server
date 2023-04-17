@@ -6,17 +6,75 @@ const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 
 const prisma = new PrismaClient();
 
-async function uploadFileToS3(filePath) {
-  const s3Client = new S3Client({
-    region: process.env.AWS_REGION,
-    // credentials: {
-    //   accessKeyId:'',
-    //   secretAccessKey:''
-    // }
-  });
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  }
+});
 
+function isImageFile(file) {
+  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+  const fileExtension = path.extname(file).toLowerCase();
 
+  return imageExtensions.includes(fileExtension);
+};
 
+function getImagesFromDir(dir) {
+  if (!fs.existsSync(dir)) {
+    return null;
+  }
+
+  const files = fs.readdirSync(dir);
+  const images = files.filter(isImageFile);
+  return images;
+};
+
+async function uploadFileToS3(bucketName, filePath) {
+  const fileStream = fs.createReadStream(filePath);
+  const fileName = path.basename(filePath);
+
+  const params = {
+    Bucket: bucketName,
+    Key: fileName,
+    Body: fileStream,
+  };
+
+  const command = new PutObjectCommand(params);
+
+  try {
+    await s3Client.send(command);
+    const fileUrl = `https://${bucketName}.s3.amazonaws.com/${fileName}`;
+    return fileUrl;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function uploadAllFromDir(imagesDir) {
+  const images = getImagesFromDir(imagesDir);
+
+  if (images === null) {
+    console.error('Error: The images directory does not exist.');
+    return;
+  }
+
+  if (images.length === 0) {
+    console.error('Error: The images directory is empty or contains no image files.');
+    return;
+  }
+
+  const bucketName = 'tryfuton';
+  for (const image of images) {
+    const imagePath = path.join(imagesDir, image);
+    try {
+      const fileUrl = await uploadFileToS3(bucketName, imagePath);
+      console.log(`Uploaded ${imagePath} to ${fileUrl}`);
+    } catch (error) {
+      console.error(`Error uploading ${imagePath}:`, error);
+    }
+  }
 };
 
 async function createBorough(boroughName) {
@@ -84,7 +142,6 @@ async function createSpaceInDatabase(spaceData, boroughId) {
   console.log(`Space created: ${spaceData.name}.`);
 }
 
-// A function to seed the database using the provided JSON file
 async function addSpace(filePath, imagesDir) {
   const fileContent = fs.readFileSync(filePath, 'utf-8');
   const spaceData = JSON.parse(fileContent);
@@ -93,27 +150,27 @@ async function addSpace(filePath, imagesDir) {
   const boroughName = spaceData.borough;
   let borough = boroughs.find((b) => b.name === boroughName);
 
-  // If the borough doesn't exist, create it
+  await uploadAllFromDir(imagesDir);
+  
   if (!borough) {
     console.error(`Borough not found: ${boroughName}. Creating borough...`);
-    borough = await createBorough(boroughName)
-      .catch((error) => {
-        console.error(error);
-        process.exit(1);
-      });
+
+    try {
+      borough = await createBorough(boroughName)
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
 
     console.log(`Borough created: ${boroughName}.`);
   }
 
-  // Upload images to S3
-
-
-  // Create database record
-  await createSpaceInDatabase(spaceData, borough.id)
-    .catch((error) => {
-      console.error(error);
-      process.exit(1);
-    });
+  try {
+    await createSpaceInDatabase(spaceData, borough.id)
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 // Execute the addSpace function with the file path provided as a command-line argument
@@ -122,21 +179,17 @@ async function addSpace(filePath, imagesDir) {
   const filePath = path.join(baseDir, 'data.json'); // e.g ./spaceData/data.json
   const imagesDir = path.join(baseDir, 'images'); // e.g ./spaceData/images
 
-  // console.log('baseDir: ', baseDir);
-  // console.log('filePath: ', filePath);
-  // console.log('imagesDir:', imagesDir);
-
   if (!baseDir) {
     console.error('Please provide a JSON file path as a command-line argument.');
     process.exit(1);
   }
 
-  addSpace(filePath, imagesDir)
-  .catch((error) => {
+  try {
+    await addSpace(filePath, imagesDir)
+    prisma.$disconnect();
+
+  } catch (error) {
     console.error(error);
     process.exit(1);
-  })
-  .finally(() => {
-    prisma.$disconnect();
-  });
+  }
 })();
