@@ -48,7 +48,8 @@ async function uploadFileToS3(bucketName, filePath) {
     const fileUrl = `https://${bucketName}.s3.amazonaws.com/${fileName}`;
     return fileUrl;
   } catch (error) {
-    throw error;
+    console.error(error);
+    process.exit(1);
   }
 }
 
@@ -73,6 +74,7 @@ async function uploadAllFromDir(imagesDir) {
       console.log(`Uploaded ${imagePath} to ${fileUrl}`);
     } catch (error) {
       console.error(`Error uploading ${imagePath}:`, error);
+      process.exit(1);
     }
   }
 };
@@ -98,7 +100,9 @@ async function fetchBoroughs() {
   return boroughs;
 };
 
-async function createSpaceInDatabase(spaceData, boroughId) {
+async function createSpaceInDatabase(spaceData, boroughId, imagesDir) {
+  const images = getImagesFromDir(imagesDir);
+
   console.log('Creating space...');
   const createdSpace = await prisma.space.create({
     data: {
@@ -130,10 +134,11 @@ async function createSpaceInDatabase(spaceData, boroughId) {
     });
   }
 
-  for (const imageData of spaceData.images) {
+  for (const image of images) {
+    const imagePath = `https://tryfuton.s3.eu-west-2.amazonaws.com/${image}`;
     await prisma.image.create({
       data: {
-        url: imageData.url,
+        url: imagePath,
         spaceId: createdSpace.id,
       },
     });
@@ -159,17 +164,19 @@ async function addSpace(filePath, imagesDir) {
       borough = await createBorough(boroughName)
     } catch (error) {
       console.error(error);
-      throw error;
+      process.exit(1);
     }
 
     console.log(`Borough created: ${boroughName}.`);
   }
 
+
+
   try {
-    await createSpaceInDatabase(spaceData, borough.id)
+    await createSpaceInDatabase(spaceData, borough.id, imagesDir);
   } catch (error) {
     console.error(error);
-    throw error;
+    process.exit(1);
   }
 }
 

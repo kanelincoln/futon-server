@@ -12,7 +12,8 @@
     "migrate:dev": "npx dotenv -e .env.dev npx prisma migrate dev",
     "migrate:test": "npx dotenv -e .env.test npx prisma migrate dev",
     "seed:dev": "npx dotenv -e .env.dev -- node seed/index.js",
-    "create-space:dev": "npx dotenv -e .env.dev -- node scripts/addSpace/index.js"
+    "create-space:dev": "npx dotenv -e .env.dev -- node scripts/addSpace/index.js",
+    "create-space:prod": "DATABASE_URL=$(heroku config:get DATABASE_URL -a tryfuton) npx dotenv -e .env.dev -- node scripts/addSpace/index.js"
   },
   "prisma": {
     "schema": "src/prisma/schema.prisma"
