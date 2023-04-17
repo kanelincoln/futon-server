@@ -1,0 +1,53 @@
+{
+  "name": "Example",
+  "type": "Café",
+  "affordability": 3,
+  "borough": "madeUpBorough",
+  "wiFi": 1,
+  "hotspot": 4,
+  "loudness": 4,
+  "power": 3,
+  "size": 3,
+  "space": 1,
+  "busyness": 3,
+  "coffee": 4,
+  "comments": "This is an example comment. I wonder what this'll look like if I made it incredibly verbose...",
+  "googleMaps": "https://goo.gl/maps/wkQwtac3Kr1sxPVj9",
+  "hours": [
+    {
+      "day": "Monday",
+      "open": "08:00",
+      "close": "17:00"
+    },
+    {
+      "day": "Tuesday",
+      "open": "08:00",
+      "close": "17:00"
+    },
+    {
+      "day": "Wednesday",
+      "open": "08:00",
+      "close": "17:00"
+    },
+    {
+      "day": "Thursday",
+      "open": "08:00",
+      "close": "17:00"
+    },
+    {
+      "day": "Friday",
+      "open": "08:00",
+      "close": "17:00"
+    },
+    {
+      "day": "Saturday",
+      "open": "09:00",
+      "close": "18:00"
+    },
+    {
+      "day": "Sunday",
+      "open": "09:00",
+      "close": "18:00"
+    }
+  ]
+}
