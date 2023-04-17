@@ -50,7 +50,7 @@ The scripts in `package.json` use `dotenv-cli` to set environment variables base
 
 ## Adding a space
 
-You can add a space to the database using the addSpace.js Node script.
+You can add a space to the database using the addSpace.js Node script. You can find an example of the directory structure accepted by the script in `/scripts/addSpace/exampleSpace` directory.
 
 ### Development
 
@@ -65,8 +65,6 @@ npm run add-space:dev path-to-data-file`
 ```bash
 npm run add-space:prod path-to-data-file`
 ```
-
-You should upload any images associated with the space to S3 prior to running this script. There is an example file called `exampleSpace.js` inside the `/scripts/addSpace` directory that illustrates the structure of the required data file.
 
 ## Important
 

@@ -1,8 +1,23 @@
-const { PrismaClient } = require('@prisma/client');
-// const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const path = require('path');
 const fs = require('fs');
 
+const { PrismaClient } = require('@prisma/client');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+
 const prisma = new PrismaClient();
+
+async function uploadFileToS3(filePath) {
+  const s3Client = new S3Client({
+    region: process.env.AWS_REGION,
+    // credentials: {
+    //   accessKeyId:'',
+    //   secretAccessKey:''
+    // }
+  });
+
+
+
+};
 
 async function createBorough(boroughName) {
   const borough = await prisma.borough.create({
@@ -25,32 +40,12 @@ async function fetchBoroughs() {
   return boroughs;
 };
 
-// A function to seed the database using the provided JSON file
-async function addSpace(filePath) {
-  const fileContent = fs.readFileSync(filePath, 'utf-8');
-  const spaceData = JSON.parse(fileContent);
-
-  const boroughs = await fetchBoroughs();
-  const boroughName = spaceData.borough;
-  let borough = boroughs.find((b) => b.name === boroughName);
-
-  // If the borough doesn't exist, create it
-  if (!borough) {
-    console.error(`Borough not found: ${boroughName}. Creating borough...`);
-    borough = await createBorough(boroughName)
-      .catch((error) => {
-        console.error(error);
-        process.exit(1);
-      });
-
-    console.log(`Borough created: ${boroughName}.`);
-  }
-
+async function createSpaceInDatabase(spaceData, boroughId) {
   console.log('Creating space...');
   const createdSpace = await prisma.space.create({
     data: {
       name: spaceData.name,
-      boroughId: borough.id,
+      boroughId: boroughId,
       type: spaceData.type,
       affordability: spaceData.affordability,
       wiFi: spaceData.wiFi,
@@ -89,15 +84,54 @@ async function addSpace(filePath) {
   console.log(`Space created: ${spaceData.name}.`);
 }
 
+// A function to seed the database using the provided JSON file
+async function addSpace(filePath, imagesDir) {
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+  const spaceData = JSON.parse(fileContent);
+
+  const boroughs = await fetchBoroughs();
+  const boroughName = spaceData.borough;
+  let borough = boroughs.find((b) => b.name === boroughName);
+
+  // If the borough doesn't exist, create it
+  if (!borough) {
+    console.error(`Borough not found: ${boroughName}. Creating borough...`);
+    borough = await createBorough(boroughName)
+      .catch((error) => {
+        console.error(error);
+        process.exit(1);
+      });
+
+    console.log(`Borough created: ${boroughName}.`);
+  }
+
+  // Upload images to S3
+
+
+  // Create database record
+  await createSpaceInDatabase(spaceData, borough.id)
+    .catch((error) => {
+      console.error(error);
+      process.exit(1);
+    });
+}
+
 // Execute the addSpace function with the file path provided as a command-line argument
 (async () => {
-  const filePath = process.argv[2];
-  if (!filePath) {
+  const baseDir = process.argv[2];
+  const filePath = path.join(baseDir, 'data.json'); // e.g ./spaceData/data.json
+  const imagesDir = path.join(baseDir, 'images'); // e.g ./spaceData/images
+
+  // console.log('baseDir: ', baseDir);
+  // console.log('filePath: ', filePath);
+  // console.log('imagesDir:', imagesDir);
+
+  if (!baseDir) {
     console.error('Please provide a JSON file path as a command-line argument.');
     process.exit(1);
   }
 
-  addSpace(filePath)
+  addSpace(filePath, imagesDir)
   .catch((error) => {
     console.error(error);
     process.exit(1);
