@@ -1,4 +1,5 @@
 **I did not use GitHub Co-pilot or ChatGPT to generate any of the code in this repo.**
+---
 
 ## Getting Started
 
